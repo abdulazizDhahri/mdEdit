@@ -1,29 +1,102 @@
 const electron = require('electron')
+const dispatcher = require('./src/app/dispatcher')
 // Module to control application life.
 const app = electron.app
+const Menu = electron.Menu
+
+const template = [
+  {
+    label: 'File',
+    submenu: [
+      {label: 'new file', click () {
+       electron.dialog.showOpenDialog({properties: ['openFile'],filters:[{name: 'All Files', extensions: ['md']}]},filePath =>{
+        dispatcher.dispatch({
+          type: "OPEN_FILE",
+          'filePath':filePath.toString(),
+        });
+       })
+        
+         } },
+    ]
+  },
+  {
+    label: 'Edit',
+    submenu: [
+      {role: 'undo'},
+      {role: 'redo'},
+      {type: 'separator'},
+      {role: 'cut'},
+      {role: 'copy'},
+      {role: 'paste'},
+      {role: 'pasteandmatchstyle'},
+      {role: 'delete'},
+      {role: 'selectall'}
+    ]
+  },
+  {
+    label: 'View',
+    submenu: [
+      {role: 'reload'},
+      {role: 'forcereload'},
+      {role: 'toggledevtools'},
+      {type: 'separator'},
+      {role: 'resetzoom'},
+      {role: 'zoomin'},
+      {role: 'zoomout'},
+      {type: 'separator'},
+      {role: 'togglefullscreen'}
+    ]
+  },
+  {
+    role: 'window',
+    submenu: [
+      {role: 'minimize'},
+      {role: 'close'}
+    ]
+  },
+  {
+    role: 'help',
+    submenu: [
+      {
+        label: 'Learn More',
+        click () { require('electron').shell.openExternal('https://electron.atom.io') }
+      }
+    ]
+  }
+]
+
+
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
 
+// require('electron-reload')(__dirname,{
+//   ignored: /node_modules|info|src\/app|dist|build|[\/\\]\./,
+// });
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 function createWindow () {
+  
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, 'src/index.html'),
     protocol: 'file:',
     slashes: true
   }))
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+   //mainWindow.webContents.openDevTools()
+
+   
+   //console.log(electron.dialog.showOpenDialog({properties: ['openFile']}))
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -32,6 +105,8 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  
 }
 
 // This method will be called when Electron has finished

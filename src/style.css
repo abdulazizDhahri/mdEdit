@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  padding: 8px;
+  background-color: #1E1E1E;
+  color: #D4D4D4;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 960px;
+  margin: auto;
+}

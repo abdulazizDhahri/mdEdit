@@ -2,5 +2,18 @@
 simple markdown editor support RTL and LTR
 
 ## install
-`npm i `
-`npm run build`
+clone repo
+```
+git clone https://github.com/apdri/mdEdit.git
+cd mdEdit
+```
+install dependencies
+
+```
+npm i
+```
+build 
+```
+npm run build
+```
+you will find your build in dist dir
